@@ -1,0 +1,26 @@
+{
+    "MO_DC": {
+        "enable": true,
+        "path": "../01.MO_DC",
+        "port": 3001,
+        "encoding": "UTF-8"
+    },
+    "MO_EL": {
+        "enable": true,
+        "path": "../01.MO_EL",
+        "port": 3002,
+        "encoding": "UTF-8"
+    },
+    "MO_B2B": {
+        "enable": true,
+        "path": "../01.MO_B2B",
+        "port": 3003,
+        "encoding": "UTF-8"
+    },
+    "01.FO2013": {
+        "enable": true,
+        "path": "../01.FO2013",
+        "port": 3004,
+        "encoding": "UTF-8"
+    }
+}

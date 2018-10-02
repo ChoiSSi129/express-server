@@ -4,7 +4,7 @@ npm install
 ## Server Start
 npm start
 
-## Bundle 내용
+## 내용
 
 ``` bash
 # Path

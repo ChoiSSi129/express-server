@@ -256,6 +256,7 @@ app.use((req, res, next) => {
 var parseData;
 app.post('/data', function(req, res) {
     var reqBody = req.body;
+    res.send("Post Success");
     
     fs.readFile('../01.MO_DC/comment.json', 'utf-8', function(err, data){
         parseData = JSON.parse(data);
@@ -278,6 +279,7 @@ app.get('/comment', function(req, res){
         parseData = data;
         res.send(parseData);
     });
+    
 });
 
 app.listen(8080, function(){

@@ -74,87 +74,83 @@ a:hover{text-decoration:none;}
         </tbody>
     </table>
     <script type="text/javascript">
-        var path = {
-            setTable: function(){
-                $.ajax({
-                    url: "./path.json",
-                    success: function(data) {
-                        var $pathTbl = $(".pathTbl");
-                        var html ="";
-                        for(var key in data){
-                            html += "<tr>";
-                            html += "<th scope='row' rowspan="+ data[key].length +">";
-                            html += key;
-                            html += "</th>";
-                            html += "<td>";
-                            html += "<a href="+data[key][0]+" target='_blank'>";
-                            html += data[key][0];
-                            html += "</a>";
-                            html += "</td>";
-                            html += "<td>";
-                            html += "<input type='text' class='comment'>";
-                            html += "<button type='submit' class='btnSubmit'>저장</button>";
-                            html += "<div class='commentWrap'>";
-                            html += "</div>";
-                            html += "</td>";
-                            html += "</tr>";
-                            if(data[key].length > 1){
-                                for(var i = 1; i < data[key].length; i ++){
-                                    html += "<tr>";
-                                    html += "<td>";
-                                    html += "<a href="+data[key][i]+" target='_blank'>";
-                                    html += data[key][i];
-                                    html += "</a>";
-                                    html += "<td>";
-                                    html += "<input type='text' class='comment'>";
-                                    html += "<button type='submit' class='btnSubmit'>저장</button>";
-                                    html += "<div class='commentWrap'>";
-                                    html += "</div>";
-                                    html += "</td>";
-                                    html += "</td>";
-                                    html += "</tr>";
-                                }
+        $(function(){
+            $.ajax({
+                url: "./path.json",
+                success: function(data) {
+                    var $pathTbl = $(".pathTbl");
+                    var html ="";
+                    for(var key in data){
+                        html += "<tr>";
+                        html += "<th scope='row' rowspan="+ data[key].length +">";
+                        html += key;
+                        html += "</th>";
+                        html += "<td>";
+                        html += "<a href="+data[key][0]+" target='_blank'>";
+                        html += data[key][0];
+                        html += "</a>";
+                        html += "</td>";
+                        html += "<td>";
+                        html += "<input type='text' class='comment'>";
+                        html += "<button type='submit' class='btnSubmit'>저장</button>";
+                        html += "<div class='commentWrap'>";
+                        html += "</div>";
+                        html += "</td>";
+                        html += "</tr>";
+                        if(data[key].length > 1){
+                            for(var i = 1; i < data[key].length; i ++){
+                                html += "<tr>";
+                                html += "<td>";
+                                html += "<a href="+data[key][i]+" target='_blank'>";
+                                html += data[key][i];
+                                html += "</a>";
+                                html += "<td>";
+                                html += "<input type='text' class='comment'>";
+                                html += "<button type='submit' class='btnSubmit'>저장</button>";
+                                html += "<div class='commentWrap'>";
+                                html += "</div>";
+                                html += "</td>";
+                                html += "</td>";
+                                html += "</tr>";
                             }
                         }
-                        $pathTbl.find("tbody").append(html);
-
-                        function setComment(){
-                            $.get("http://localhost:8080/comment", function(data) {
-                                var parseData = JSON.parse(data);
-                                $pathTbl.find("a").each(function(){
-                                    var $that = $(this);
-                                    var text = $that.text();
-                                    var html = "";
-                                    if(parseData.data[text] !== undefined){
-                                        for(var i = 0; i < parseData.data[text].length; i++){
-                                            html += "<p class='commentText'>"+ parseData.data[text][i] +"</p>"
-                                        }
-                                        $that.parents("tr").find(".commentWrap").append(html);
-                                    }
-                                });
-                            });
-                        };
-                        setComment();
-
-                        $pathTbl.find(".btnSubmit").on("click", function(){
-                            var idx = $(this).parents("tr").index();
-                            var url = $(".pathTbl tbody tr").eq(idx).find("a").text();
-                            var text = $(this).siblings(".comment").val();
-                            var obj = {url: url, text: text};
-                            if(text !== ''){
-                                $.post("http://localhost:8080/data", obj, function(data) {
-                                    console.log(data);
-                                });
-                                setComment();
-                            }
-                        });
                     }
-                });
-            }
-        };
+                    $pathTbl.find("tbody").append(html);
 
-        $(function(){
-            path.setTable();
+                    function setComment(){
+                        $.get("http://localhost:8080/comment", function(data) {
+                            var parseData = JSON.parse(data);
+                            $pathTbl.find("a").each(function(){
+                                var $that = $(this);
+                                var text = $that.text();
+                                var html = "";
+                                if(parseData.data[text] !== undefined){
+                                    for(var i = 0; i < parseData.data[text].length; i++){
+                                        html += "<p class='commentText'>"+ parseData.data[text][i] +"</p>"
+                                    }
+                                    $that.parents("tr").find(".commentWrap").html("");
+                                    $that.parents("tr").find(".commentWrap").append(html);
+                                }
+                            });
+                        });
+                    };
+                    setComment();
+
+                    $pathTbl.find(".btnSubmit").on("click", function(){
+                        var idx = $(this).parents("tr").index();
+                        var url = $(".pathTbl tbody tr").eq(idx).find("a").text();
+                        var text = $(this).siblings(".comment").val();
+                            var obj = {url: url, text: text};
+                        if(text !== ''){
+                            $(this).siblings(".comment").val("");
+                            $.post("http://localhost:8080/data", obj, function(data) {
+                                console.log(data);
+                                setComment();
+                            });
+                        }
+                    });
+                }
+            });
         });
     </script>
 </body>

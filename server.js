@@ -1,9 +1,9 @@
-/***************************************************************************
- * 필수 모듈 선언
- **************************************************************************/
+
 var express = require('express'),
     fs = require('fs'),
-    config = getConfig('config.json');
+    config = getConfig('config.json'),
+    app = express(),
+    bodyParser = require("body-parser");
 
 /***************************************************************************
  * Util Func.
@@ -240,3 +240,46 @@ function createPath(path){
         });
     });
 }
+
+/***************************************************************************
+ * Comment
+ **************************************************************************/
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use((req, res, next) => {
+    res.append('Access-Control-Allow-Origin', ['*']);
+    res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.append('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+});
+
+var parseData;
+app.post('/data', function(req, res) {
+    var reqBody = req.body;
+    
+    fs.readFile('../01.MO_DC/comment.json', 'utf-8', function(err, data){
+        parseData = JSON.parse(data);
+        if(parseData.data[reqBody.url]){
+            parseData.data[reqBody.url].push(reqBody.text);
+        } else{
+            parseData.data[reqBody.url] = [];
+            parseData.data[reqBody.url].push(reqBody.text);
+        }
+
+        fs.writeFile('../01.MO_DC/comment.json', JSON.stringify(parseData), function(err){
+            if(err) throw err;
+            console.log("Data Save");
+        });
+    });
+});
+
+app.get('/comment', function(req, res){
+    fs.readFile('../01.MO_DC/comment.json', 'utf-8', function(err, data){
+        parseData = data;
+        res.send(parseData);
+    });
+});
+
+app.listen(8080, function(){
+    console.log("Data Server Started.");
+});

@@ -4,12 +4,13 @@
   "description": "lotte.com mobile server management",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server",
+    "start": "nodemon lotteServer",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Hyeongyun, Park",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.14.0",
     "express-generator": "^4.13.4",
     "express-vhost": "^0.2.0",

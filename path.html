@@ -137,14 +137,15 @@ a:hover{text-decoration:none;}
                     setComment();
 
                     $pathTbl.find(".btnSubmit").on("click", function(){
-                        var idx = $(this).parents("tr").index();
+                        var $that = $(this);
+                        var idx = $that.parents("tr").index();
                         var url = $(".pathTbl tbody tr").eq(idx).find("a").text();
-                        var text = $(this).siblings(".comment").val();
-                            var obj = {url: url, text: text};
+                        var text = $that.siblings(".comment").val();
+                        var obj = {url: url, text: text};
                         if(text !== ''){
-                            $(this).siblings(".comment").val("");
                             $.post("http://localhost:8080/data", obj, function(data) {
                                 console.log(data);
+                                $that.siblings(".comment").val("");
                                 setComment();
                             });
                         }

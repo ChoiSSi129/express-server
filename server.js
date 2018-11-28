@@ -163,7 +163,7 @@ function createServer(name, path, port, defaultEncoding, exceptionEncoding) {
             // Create Path
             if(config){
                 for(var key in config){
-                    if(port === config[key].port && port !== 3004) createPath(config[key].path);
+                    if(port === config[key].port && port !== 3004 && port !== 3005) createPath(config[key]);
                 }
             }
         });
@@ -200,6 +200,11 @@ if (config) {
 /***************************************************************************
  * Path파일 생성
  **************************************************************************/
+var pathObj = {
+    MO_DC: {},
+    MO_EL: {},
+    MO_B2B: {}
+};
 function createPath(path){
     var walk = require('walk'),
     files = [];
@@ -212,7 +217,7 @@ function createPath(path){
         return arr;
     }
 
-    var walker  = walk.walk(path, { 
+    var walker  = walk.walk(path.path, { 
         followLinks: false,
         filters: ['_grint-init', '.settings', '@JSP_File', 'app', 'common3', 'common4', 'publish', 'HTML', 'HTML_', 'ngdoc', 'node_modules', 'npm', 'resources', 'json']
     });
@@ -220,23 +225,33 @@ function createPath(path){
     walker.on('file', function(root, stat, next){
         if(stat.name.match('_dev.html')){
             var setRoot = root.replace(/\\/g, '/');
-            setRoot = setRoot.replace(path, '');
+            setRoot = setRoot.replace(path.path, '');
             var stringSplit = setRoot.split('/')[1];
             files.push( {name: stringSplit, url: setRoot + '/' + stat.name} );
         }
         next();
     });
 
-    walker.on('end', function(){
-        var obj = {};
-        for(var key in files){
-            if(obj[files[key].name] === undefined) obj[files[key].name] = getPathUrl(files, files[key].name);
-        }
-
-        var data = JSON.stringify(obj);
-        fs.writeFile(path+'/path.json', data, function(err){
-            if(err) throw err;
-            console.log("saved");
+    function getData(){
+        return new Promise(function(resolve, reject){
+            walker.on('end', function(){
+                for(var key in files){
+                    if(pathObj[path.name][files[key].name] === undefined) pathObj[path.name][files[key].name] = getPathUrl(files, files[key].name);
+                }
+                // JSON File Set
+                // var data = JSON.stringify(obj);
+                // fs.writeFile(path+'/path.json', data, function(err){
+                //     if(err) throw err;
+                //     console.log("saved");
+                // });
+                resolve(pathObj);
+            });
+        });
+    }
+    getData().then(function(resolveData){
+        app.get("/path", function(req, res){
+            var data = JSON.stringify(resolveData[req.query.root]);
+            res.send(data);
         });
     });
 }
@@ -279,7 +294,6 @@ app.get('/comment', function(req, res){
         parseData = data;
         res.send(parseData);
     });
-    
 });
 
 app.listen(8080, function(){

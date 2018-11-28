@@ -5,8 +5,8 @@
 <meta name="viewport" content="user-scalable=no, viewport-fit=cover, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, target-densitydpi=medium-dpi">
 <meta http-equiv="X-UA-Compatible" content="IE=Edge">
 <meta name="format-detection" content="telephone=no">
-<title></title>
-<style>
+<title>Path</title>
+<style type="text/css">
 html, body {font-family:ng, Arial, Dotum sans-serif;font-size:14px;color:#666;}
 body {line-height:1.2;word-break:break-all;}
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,select,input,textarea,p,blockquote,th,td {margin:0;padding:0;}
@@ -25,134 +25,118 @@ br,p{letter-spacing:normal;}
 a{color:#777; text-decoration:none;}
 a:hover{text-decoration:none;}
 
-.pathTbl{width:100%;margin-top:20px;}
-.pathTbl thead tr th{padding:15px 0;border-top:2px solid #7a7a7a;border-bottom:1px solid #bfbfbf;border-left:1px solid #ddd;font-family:ngB;font-size:13px;color:#000;}
-.pathTbl thead tr th:first-child {border-left:0;}
-.pathTbl tbody tr th,
-.pathTbl tbody tr td{padding:10px 0 10px 20px;font-size:12px;color:#000;border-bottom:1px solid #ddd;text-align:left;}
-.pathTbl tbody th {background:#f2f2f2;}
-.pathTbl tbody th > .txt,
-.pathTbl tbody td > .txt {margin-top:5px;color:#888;}
-.pathTbl tr.on th,
-.pathTbl tr.on td {background:#f2f2f2;}
-.pathTbl .url a {color:#009e00;}
-.pathTbl .url a:hover {text-decoration:underline;}
-.pathTbl .dep1 {font-family:ngB;}
-.pathTbl .dep2,
-.pathTbl .dep3,
-.pathTbl .dep4 {padding-top:15px;vertical-align:top;}
-.pathTbl .date {font-size:12px;}
-.pathTbl .date p {}
-.pathTbl .date a {font-size:10px;}
-.pathTbl .date a:hover {color:#ff0000;}
-.pathTbl .txt {border-right:0;}
-.pathTbl .txt ul li {margin-top:5px;}
-.pathTbl .txt ul li:first-child {margin-top:0;}
-.pathTbl tbody tr td.check {padding:0;font-size:17px;text-align:center;}
-.pathTbl tbody tr.del .tit,
-.pathTbl tbody tr.del .url a {text-decoration:line-through;color:#ff0000;}
+.fl {float:left !important;}
+.fr {float:right !important;}
+
+#guideWrap {position:relative; width:100%;}
+#guideHeader {width:100%; min-height:80px; background:#719cff;}
+#guideHeader:after {content:""; display:block; clear:both;}
+#guideHeader h1 {float:left; margin:25px 0 0 20px; font-weight:bold; font-size:30px; color:#fff;}
+#guideHeader .left{float:left; margin:35px 0 0 10px; padding-left:10px; border-left:1px solid #fff; font-size:20px; color:#fff;}
+#guideHeader .total{margin:30px 50px 0 0; font-size:20px; color:#fff;}
+#guideHeader .total span span{margin:0 4px;}
+#guideHeader .total span em{color:#ccc;}
+.pathList {padding:50px 15px;}
+.pathList .pathTbl{width:100%;}
+.pathList .pathTbl thead tr th{padding:15px 0; border-top:2px solid #7a7a7a; border-bottom:1px solid #bfbfbf; border-left:1px solid #ddd; font-size:13px; color:#000;}
+.pathList .pathTbl thead tr th:first-child {border-left:0;}
+.pathList .pathTbl tbody tr th,
+.pathList .pathTbl tbody tr td{padding:10px 0 10px 20px; font-size:12px; color:#000; border-right:1px solid #ddd; border-bottom:1px solid #ddd; text-align:left; }
+.pathList .pathTbl tbody th {background:#f2f2f2;}
+.pathList .pathTbl tr.on th,
+.pathList .pathTbl tr.on td{background:#f2f2f2;}
+.pathList .pathTbl .url a{color:#333;}
+.pathList .pathTbl .url a:hover {text-decoration:underline;}
+.pathList .pathTbl .dep1{font-weight:bold;}
+.pathList .pathTbl .date{font-size:12px;}
+.pathList .pathTbl .date a {font-size:14px;}
+.pathList .pathTbl .date strong{display:block; margin-top:5px; font-weight:normal;}
+.pathList .pathTbl .date a:hover {color:#c00000;}
+.pathList .pathTbl .txt{border-right:0;}
+.pathList .pathTbl .txt ul li {margin-top:5px;}
+.pathList .pathTbl .txt ul li:first-child {margin-top:0;}
+.pathList .pathTbl tbody tr td.check {padding:0; text-align:center;}
 </style>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 </head>
 <body>
-    <h1>MO_DC Path</h1>
-    <table class="pathTbl">
-        <colgroup>
-            <col style="width:20%;">
-            <col style="width:50%;">
-            <col style="width:30%;">
-        </colgroup>
-        <thead>
+<div id="guideWrap">
+    <!-- Header -->
+    <div id="guideHeader">
+        <div class="fl">
+            <h1>MO_DC</h1>
+            <p class="left">Path</p>
+        </div>
+        <div class="fr">
+            <div class="total"></div>
+        </div>
+    </div>
+    <!-- //Header -->
+
+    <!-- Path List -->
+    <div class="pathList">
+        <table class="pathTbl">
+            <caption>Path List</caption>
+            <colgroup>
+                <col width="20%">
+                <col width="50%">
+                <col width="30%">
+            </colgroup>
+            <thead>
             <tr>
-                <th scope="col">Depth</th>
-                <th scope="col">Url</th>
-                <th scope="col">comment</th>
+                <th scope="col">Depth 1</th>
+                <th scope="col">URL</th>
+                <th scope="col">Notice</th>
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
+				
+            </tbody>
+        </table>
+        <!-- //리스트 표 -->
+    </div>
+</div>
 
-        </tbody>
-    </table>
-    <script type="text/javascript">
-        $(function(){
-            $.ajax({
-                url: "./path.json",
-                success: function(data) {
-                    var $pathTbl = $(".pathTbl");
-                    var html ="";
-                    for(var key in data){
-                        html += "<tr>";
-                        html += "<th scope='row' rowspan="+ data[key].length +">";
-                        html += key;
-                        html += "</th>";
-                        html += "<td>";
-                        html += "<a href="+data[key][0]+" target='_blank'>";
-                        html += data[key][0];
-                        html += "</a>";
-                        html += "</td>";
-                        html += "<td>";
-                        html += "<input type='text' class='comment'>";
-                        html += "<button type='submit' class='btnSubmit'>저장</button>";
-                        html += "<div class='commentWrap'>";
-                        html += "</div>";
-                        html += "</td>";
-                        html += "</tr>";
-                        if(data[key].length > 1){
-                            for(var i = 1; i < data[key].length; i ++){
-                                html += "<tr>";
-                                html += "<td>";
-                                html += "<a href="+data[key][i]+" target='_blank'>";
-                                html += data[key][i];
-                                html += "</a>";
-                                html += "<td>";
-                                html += "<input type='text' class='comment'>";
-                                html += "<button type='submit' class='btnSubmit'>저장</button>";
-                                html += "<div class='commentWrap'>";
-                                html += "</div>";
-                                html += "</td>";
-                                html += "</td>";
-                                html += "</tr>";
-                            }
-                        }
-                    }
-                    $pathTbl.find("tbody").append(html);
+<script type="text/javascript">
+	var app = app || {
+		initPathList: function(){
+			$.get("http://10.149.101.149:8080/path", {root: "MO_DC"}, function(data){
+				var path = JSON.parse(data);
+				app.setHTML(path);
+				app.setTotal();
+			}).fail(function(err){
+				console.log(err, "데이터 로드 실패");
+			});
+		},
 
-                    function setComment(){
-                        $.get("http://localhost:8080/comment", function(data) {
-                            var parseData = JSON.parse(data);
-                            $pathTbl.find("a").each(function(){
-                                var $that = $(this);
-                                var text = $that.text();
-                                var html = "";
-                                if(parseData.data[text] !== undefined){
-                                    for(var i = 0; i < parseData.data[text].length; i++){
-                                        html += "<p class='commentText'>"+ parseData.data[text][i] +"</p>"
-                                    }
-                                    $that.parents("tr").find(".commentWrap").html("");
-                                    $that.parents("tr").find(".commentWrap").append(html);
-                                }
-                            });
-                        });
-                    };
-                    setComment();
+		setHTML: function(data){
+			var html = "'";
+			for(var key in data){
+				for(var i = 0; i < data[key].length; i++){
+					if(i === 0){
+						html += "'<tr>";
+						html += "'<th class='dep1' scope='row' rowspan="+ data[key].length +">"+ key +"</th>";
+						html += "<td class='url'><a href="+ data[key][i] +" target='_blank' title='새창'>"+ data[key][i] +"</a></td>";
+						html += "'<td class='txt'></td>";
+						html += "'</tr>";
+					} else{
+						html += "'<tr>";
+						html += "<td class='url'><a href="+ data[key][i] +" target='_blank' title='새창'>"+ data[key][i] +"</a></td>";
+						html += "'<td class='txt'></td>";
+						html += "'</tr>";
+					}
+				}
+			}
+			$(".pathList tbody").append(html);
+		},
 
-                    $pathTbl.find(".btnSubmit").on("click", function(){
-                        var $that = $(this);
-                        var idx = $that.parents("tr").index();
-                        var url = $(".pathTbl tbody tr").eq(idx).find("a").text();
-                        var text = $that.siblings(".comment").val();
-                        var obj = {url: url, text: text};
-                        if(text !== ''){
-                            $.post("http://localhost:8080/data", obj, function(data) {
-                                console.log(data);
-                                $that.siblings(".comment").val("");
-                                setComment();
-                            });
-                        }
-                    });
-                }
-            });
-        });
-    </script>
+		setTotal: function(){
+			var html = "Total : "+ $(".url").length;
+			$(".total").append(html);
+		}
+	};
+	app.initPathList();
+
+</script>
 </body>
 </html>
